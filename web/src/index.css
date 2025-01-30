@@ -1,14 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-
-
 :root {
     --color-primary: #3949AB;    /* Primary color */
-    --color-secondary: #3949ab;  /* Secondary color */
+    --color-offset: #bbc0e0;    /* Primary color */
+    --color-primary-variant: #17318e; /* Primary variant color */
+    --color-link: #5769D4; /* Primary variant color */
+    --color-secondary: #5769d5;  /* Secondary color */
     --color-btnHover: #27368F;  /* btn hover */
+    --color-btnSocialHover: #f0f0f0;
     --color-btnDisabled: #27368F;  /* btn disabled */
     --color-bg: #E2DFED;         /* Background color */
     --color-bg-sec: #d2d2e2;     /* Secondary background color */
@@ -16,8 +19,6 @@
     --color-text-sec: #757575;   /* Secondary text color */
   }
 
-
-  
 html{
     height: 100%;
 }
@@ -26,12 +27,6 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-button::hover{
-    background-color: var(--color-btnHover);
+.main-box{
+  box-shadow: #1f2863 0px 0px 60px -13px; 
 }
-
-button{
-  background-color: var(--color-primary);
-  color: white;
-}
-
