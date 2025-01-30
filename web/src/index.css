@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+
+:root {
+    --color-primary: #3949AB;    /* Primary color */
+    --color-secondary: #3949ab;  /* Secondary color */
+    --color-btnHover: #27368F;  /* btn hover */
+    --color-btnDisabled: #27368F;  /* btn disabled */
+    --color-bg: #E2DFED;         /* Background color */
+    --color-bg-sec: #d2d2e2;     /* Secondary background color */
+    --color-text: #444141;       /* Text color */
+    --color-text-sec: #757575;   /* Secondary text color */
+  }
+
+
+  
+html{
+    height: 100%;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+button::hover{
+    background-color: var(--color-btnHover);
+}
+
+button{
+  background-color: var(--color-primary);
+  color: white;
+}
+
