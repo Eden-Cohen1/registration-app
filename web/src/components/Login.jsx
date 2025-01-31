@@ -1,13 +1,51 @@
 import CustomTextInput from "./CustomTextInput"
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        console.log('Logging in with:', email, password);
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        try{
+            const res = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                  })
+            })
+            if(!res.ok){
+                throw new Error(`Server responded with ${response.status}`);
+
+            }
+            console.log("request succusses", res.status)
+        }catch(error){
+            console.error("Login error:", error);
+        }
+
+        try{
+            const res = await fetch('http://localhost:3001/random-text');
+            if (!res.ok) {
+            throw new Error(`Server error: ${res.status}`);
+            }
+            const data = await res.json();
+
+            
+            toast.success(`Random text: ${data.text}`, {
+                position: "top-center"
+            });
+    } catch (error) {
+        console.error('Error:', error);
+        toast.error("Something went wrong while logging in or fetching random text.");
+    }
       };
+
     return(
         <>
         <div className="main-box flex m-auto w-[80%] max-w-[1100px] h-[38rem] bg-white rounded-2xl">
@@ -24,7 +62,7 @@ function Login() {
             </div>
             <div className="right w-[40%] rounded-r-2xl flex flex-col items-center justify-center px-12">
                 <h1 className="text-primary font-semibold mb-14">Log in</h1>
-                <form className="w-full">
+                <form className="w-full" onSubmit={handleLogin}>
                 <div className="flex flex-col gap-0">
                 <CustomTextInput
                     type="email"
@@ -42,7 +80,7 @@ function Login() {
 
                 </div>
 
-                <button className="bg-primary text-white rounded-3xl py-2 text-xs w-full mt-8 hover:bg-btnHover">Log in</button>
+                <button type='submit' className="bg-primary text-white rounded-3xl py-2 text-xs w-full mt-8 hover:bg-btnHover">Log in</button>
                 </form>
                 <div className="flex items-center justify-center m-auto my-2 w-[60%]">
                     <div className="flex-grow h-px bg-gray-200" />
