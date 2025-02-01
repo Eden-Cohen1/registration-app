@@ -23,6 +23,9 @@ client = MongoClient(MONGO_URI)
 db = client["homeAssignment"]
 users_collection = db["users"]  # Naming convention: lowercase with underscores
 
+@app.before_request
+def log_request():
+    print(f"Incoming request: {request.method} {request.path}")
 
 @app.route("/login", methods=["POST"])
 def login():
