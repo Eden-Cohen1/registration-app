@@ -50,9 +50,9 @@ function Login() {
 
     return(
         <>
-        <div className="main-box flex m-auto w-[80%] max-w-[1100px] h-[38rem] bg-white rounded-2xl">
-            <img src='/logo.svg' className=" w-[2.5rem] absolute mt-10 ml-10 z-1"/>
-            <div className="left w-[60%] flex flex-col bg-primary h-full items-center justify-center rounded-l-2xl">
+        <div className="main-box relative flex m-auto w-[80%] max-w-[1100px] h-[38rem] bg-white rounded-2xl">
+            <img src='/logo.svg' className=" hidden md:flex w-[2.5rem] absolute mt-10 ml-10 z-1 "/>
+            <div className="left w-[60%] hidden md:flex flex-col bg-primary h-full items-center justify-center rounded-l-2xl">
                 <div className="relative flex justify-center">
                     <div className="absolute mr-4 mt-4 w-[14rem] h-[14rem] rounded-full bg-primaryVar z-0"></div>
                     <img src='/pcImage.png' className="w-[80%] z-10"/>
@@ -62,7 +62,8 @@ function Login() {
                     <h2 className="font-light text-[12px]">just a couple of clicks and we start</h2>
                 </div>
             </div>
-            <div className="right w-[40%] rounded-r-2xl flex flex-col items-center justify-center px-12">
+            <div className="right m-auto max-w-[28rem] md:w-[40%] w-full sm:px-20 px-10 rounded-r-2xl flex flex-col items-center justify-center md:px-12">
+            <img src='/logo_mobile.svg' className="md:hidden flex w-[2.5rem] mb-6"/>
                 <h1 className="text-primary font-semibold mb-14">Log in</h1>
                 <form className="w-full" onSubmit={handleLogin}>
                 <div className="flex flex-col gap-0">

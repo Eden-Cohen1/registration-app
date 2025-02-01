@@ -1,13 +1,25 @@
+import { useState } from "react";
+
 function CustomTextInput({ label, value, onChange, type = 'text' }){
+    const [showPassword, setShowPassword] = useState(false)
     const isPass = type === "password" 
     const icon = isPass ? "/lock.svg" : "/email.svg"
+    const inputType = isPass ? (showPassword ? 'text' : 'password') : type;
+
     return (
         <>
         <div className="mb-4 flex gap-3 items-center relative">
             <img src={icon} className="absolute ml-2" />
-            { isPass && <img src="/view.svg" className="absolute right-3 cursor-pointer" /> }
+            { isPass && 
+            <button
+              type="button" 
+              className="absolute right-3 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}>
+
+            <img src="/view.svg" className="" /> 
+            </button>}
             <input
-              type={type}
+              type={inputType}
               className="w-full
                         pl-10 py-2
                         text-xs
