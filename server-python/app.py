@@ -3,7 +3,7 @@ import mimetypes
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 
 # Ensure JavaScript files are served with the correct MIME type
 mimetypes.add_type("application/javascript", ".js")
@@ -40,13 +40,8 @@ def login():
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
 
-    try:
-        users_collection.insert_one({"email": email, "password": password})
-        return jsonify({"message": "User created & logged in"}), 201
-    
-    except errors.PyMongoError as e:
-        print(f"❌ Database Insertion Error: {e}")
-        return jsonify({"error": "Failed to insert user into database", "details": str(e)}), 500
+    users_collection.insert_one({"email": email, "password": password})
+    return jsonify({"message": "User created & logged in"}), 201
 
 
 @app.route("/", methods=["GET"])
