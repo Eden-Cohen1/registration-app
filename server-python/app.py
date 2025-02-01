@@ -19,9 +19,9 @@ app = Flask(__name__, static_folder="../web/dist", static_url_path="/")
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Connect to MongoDB
-client = MongoClient(MONGO_URI)
-db = client["homeAssignment"]
-users_collection = db["users"]  # Naming convention: lowercase with underscores
+#client = MongoClient(MONGO_URI)
+#db = client["homeAssignment"]
+#users_collection = db["users"]  # Naming convention: lowercase with underscores
 
 @app.before_request
 def log_request():
@@ -40,7 +40,7 @@ def login():
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
 
-    users_collection.insert_one({"email": email, "password": password})
+    #users_collection.insert_one({"email": email, "password": password})
     return jsonify({"message": "User created & logged in"}), 201
 
 
