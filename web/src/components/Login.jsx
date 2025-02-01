@@ -10,7 +10,7 @@ function Login() {
         e.preventDefault();
 
         try{
-            const res = await fetch("registrationapp-gddsf8hjebaea6d6.israelcentral-01.azurewebsites.net/login", {
+            const res = await fetch("https://registrationapp-gddsf8hjebaea6d6.israelcentral-01.azurewebsites.net/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
