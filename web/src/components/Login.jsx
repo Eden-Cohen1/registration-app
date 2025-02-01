@@ -21,10 +21,10 @@ function Login() {
                   })
             })
             if(!res.ok){
-                throw new Error(`Server responded with ${response.status}`);
+                throw new Error(`Server responded with ${res.status}`);
 
             }
-            const data = await response.json();
+            const data = await res.json();
             console.log("Server response:", data);
             
         }catch(error){
