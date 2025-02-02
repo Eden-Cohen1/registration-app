@@ -21,7 +21,7 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 # Connect to MongoDB
 client = MongoClient(MONGO_URI)
 db = client["homeAssignment"]
-users_collection = db["users"]  # Naming convention: lowercase with underscores
+users_collection = db["users"] 
 
 @app.before_request
 def log_request():

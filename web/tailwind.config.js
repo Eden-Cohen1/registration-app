@@ -12,7 +12,7 @@ export default {
         link: "var(--color-link)",  // link color
         secondary: "var(--color-secondary)",  // Secondary color
         btnHover: "var(--color-btnHover)",  // Button hover color
-        btnSocialHover: "var(--color-btnSocialHover:)",  // Button hover color
+        btnSocialHover: "var(--color-btnSocialHover)",  // Button hover color
         btnDisabled: "var(--color-btnDisabled)",  // Button disabled color
         bg: "var(--color-bg)",              // Background color
         "bgSec": "var(--color-bg-sec)",    // Secondary background color

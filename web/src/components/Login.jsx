@@ -1,106 +1,160 @@
-import CustomTextInput from "./CustomTextInput"
+import CustomTextInput from "./CustomTextInput";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import suite from "../validations/suite";
+import classnames from "vest/classnames";
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [formState, setFormState] = useState({
+    email: "",
+    password: "",
+  });
+  const [validationResult, setValidationResult] = useState(suite.get());
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-        try{
-            const res = await fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                  })
-            })
-            if(!res.ok){
-                throw new Error(`Server responded with ${res.status}`);
-
-            }
-            const data = await res.json();
-            console.log("Server response:", data);
-            
-        }catch(error){
-            console.error("Login error:", error);
-        }
-
-        try{
-            const res = await fetch('http://localhost:3001/random-text');
-            if (!res.ok) {
-            throw new Error(`Server error: ${res.status}`);
-            }
-            const data = await res.json();
-
-            
-            toast.success(`Random text: ${data.text}`, {
-                position: "top-center"
-            });
+    try {
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formState.email,
+          password: formState.password,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      const data = await res.json();
+      console.log("Server response:", data);
     } catch (error) {
-        console.error('Error:', error);
-        toast.error("Something went wrong while logging in or fetching random text.");
+      console.error("Login error:", error);
     }
-      };
 
-    return(
-        <>
-        <div className="main-box relative flex m-auto w-[80%] max-w-[1100px] h-[38rem] bg-white rounded-2xl">
-            <img src='/logo.svg' className=" hidden md:flex w-[2.5rem] absolute mt-10 ml-10 z-1 "/>
-            <div className="left w-[60%] hidden md:flex flex-col bg-primary h-full items-center justify-center rounded-l-2xl">
-                <div className="relative flex justify-center">
-                    <div className="absolute mr-4 mt-4 w-[14rem] h-[14rem] rounded-full bg-primaryVar z-0"></div>
-                    <img src='/pcImage.png' className="w-[80%] z-10"/>
-                </div>
-                <div className="text-center text-white ">
-                    <h1 className="font-medium text-[20px]">Welcome aboard my friend</h1>
-                    <h2 className="font-light text-[12px]">just a couple of clicks and we start</h2>
-                </div>
-            </div>
-            <div className="right m-auto max-w-[28rem] md:w-[40%] w-full sm:px-20 px-10 rounded-r-2xl flex flex-col items-center justify-center md:px-12">
-            <img src='/logo_mobile.svg' className="md:hidden flex w-[2.5rem] mb-6"/>
-                <h1 className="text-primary font-semibold mb-14">Log in</h1>
-                <form className="w-full" onSubmit={handleLogin}>
-                <div className="flex flex-col gap-0">
-                <CustomTextInput
-                    type="email"
-                    label="Email"
-                    value={email}
-                    onChange={setEmail}
-                />
-                <CustomTextInput
-                    type="password"
-                    label="Password"
-                    value={password}
-                    onChange={setPassword}
-                />
-                <a className="text-link text-xs font-semibold w-fit ml-auto hover:text-primary">Forgot password?</a>
+    try {
+      const res = await fetch("http://localhost:3001/random-text");
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+      const data = await res.json();
 
-                </div>
+      toast.success(`Random text: ${data.text}`, {
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(
+        "Something went wrong while logging in or fetching random text."
+      );
+    }
+  };
 
-                <button type='submit' className="bg-primary text-white rounded-3xl py-2 text-xs w-full mt-8 hover:bg-btnHover">Log in</button>
-                </form>
-                <div className="flex items-center justify-center m-auto my-2 w-[60%]">
-                    <div className="flex-grow h-px bg-gray-200" />
-                    <span className="mx-2 text-gray-400 text-xs font-semibold">Or</span>
-                    <div className="flex-grow h-px bg-gray-200" />
-                </div>
-                <div className="flex justify-center items-center gap-3">
-                    <button className="bg-white flex gap-2 border-solid border-primary border-[1px] py-2 pr-10 pl-6 rounded-3xl text-xs items-center w-[50%] text-primary hover:bg-btnSocialHover"><img src='Google.svg'/>Google</button>
-                    <button className="bg-white flex gap-2 border-solid border-primary border-[1px] py-2 pr-10 pl-6 rounded-3xl text-xs items-center w-[50%] text-primary hover:bg-btnSocialHover"><img src='Facebook.svg'/>Facebook</button>
-                </div>
-                <h2 className="font-semibold text-xs text-gray-400 mt-6">Have no account yet?</h2>
-                <button className="text-primary rounded-3xl py-2 text-xs w-full mt-4 border-solid border-primary border-[1px]">Register</button>
+  const handleFieldChange = (field, value) => {
+    const newState = { ...formState, [field]: value };
+    setFormState(newState);
+    // Run validation for the current field
+    const res = suite(newState, field).done(setValidationResult);
+    console.log(res);
+  };
 
-            </div>
+  const cn = classnames(validationResult, {
+    invalid: "error",
+    valid: "success",
+    warning: "warning",
+  });
+
+  return (
+    <>
+      <div className="main-box relative flex m-auto w-[80%] max-w-[1100px] h-[38rem] bg-white rounded-2xl">
+        <img
+          src="/logo.svg"
+          className=" hidden md:flex w-[2.5rem] absolute mt-10 ml-10 z-1 "
+        />
+        <div className="left w-[60%] hidden md:flex flex-col bg-primary h-full items-center justify-center rounded-l-2xl">
+          <div className="relative flex justify-center">
+            <div className="absolute mr-4 mt-4 w-[14rem] h-[14rem] rounded-full bg-primaryVar z-0"></div>
+            <img src="/pcImage.png" className="w-[80%] z-10" />
+          </div>
+          <div className="text-center text-white ">
+            <h1 className="font-medium text-[20px]">
+              Welcome aboard my friend
+            </h1>
+            <h2 className="font-light text-[12px]">
+              just a couple of clicks and we start
+            </h2>
+          </div>
         </div>
-        </>
-    )
+        <div className="right m-auto max-w-[28rem] md:w-[40%] w-full sm:px-20 px-10 rounded-r-2xl flex flex-col items-center justify-center md:px-12">
+          <img
+            src="/logo_mobile.svg"
+            className="md:hidden flex w-[2.5rem] mb-6"
+          />
+          <h1 className="text-primary font-semibold mb-14">Log in</h1>
+          <form
+            className="w-full relative flex flex-col"
+            onSubmit={handleLogin}
+          >
+            <CustomTextInput
+              type="email"
+              label="Email"
+              value={formState.email}
+              onChange={(value) => handleFieldChange("email", value)}
+              errors={validationResult.getErrors("email")}
+              warnings={validationResult.getWarnings("email")}
+            />
+            <CustomTextInput
+              type="password"
+              label="Password"
+              value={formState.password}
+              onChange={(value) => handleFieldChange("password", value)}
+              className={cn("password")}
+              errors={validationResult.getErrors("password")}
+              warnings={validationResult.getWarnings("password")}
+            />
+
+            <button
+              type="button"
+              className="text-link text-xs font-semibold w-fit ml-auto hover:text-primary disabled:opacity-50"
+            >
+              Forgot password?
+            </button>
+
+            <button
+              type="submit"
+              className="bg-primary text-white rounded-3xl py-2 text-xs w-full mt-8 hover:bg-btnHove disabled:opacity-50"
+              disabled={!validationResult.isValid()}
+            >
+              Log in
+            </button>
+          </form>
+          <div className="flex items-center justify-center m-auto my-2 w-[60%]">
+            <div className="flex-grow h-px bg-gray-200" />
+            <span className="mx-2 text-gray-400 text-xs font-semibold">Or</span>
+            <div className="flex-grow h-px bg-gray-200" />
+          </div>
+          <div className="flex justify-center items-center gap-3">
+            <button className="bg-white flex gap-2 border-solid border-primary border-[1px] py-2 pr-10 pl-6 rounded-3xl text-xs items-center w-[50%] text-primary hover:bg-btnSocialHover disabled:opacity-50">
+              <img src="Google.svg" />
+              Google
+            </button>
+            <button className="bg-white flex gap-2 border-solid border-primary border-[1px] py-2 pr-10 pl-6 rounded-3xl text-xs items-center w-[50%] text-primary hover:bg-btnSocialHover disabled:opacity-50">
+              <img src="Facebook.svg" />
+              Facebook
+            </button>
+          </div>
+          <h2 className="font-semibold text-xs text-gray-400 mt-6">
+            Have no account yet?
+          </h2>
+          <button className="text-primary rounded-3xl py-2 text-xs w-full mt-4 border-solid border-primary border-[1px] hover:bg-btnSocialHover disabled:opacity-50">
+            Register
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default Login
+export default Login;
